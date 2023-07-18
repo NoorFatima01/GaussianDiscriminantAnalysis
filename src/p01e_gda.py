@@ -3,7 +3,6 @@ import util
 
 from linear_model import LinearModel
 
-
 def main(train_path, eval_path, pred_path):
     """Problem 1(e): Gaussian discriminant analysis (GDA)
     Args:
@@ -15,7 +14,15 @@ def main(train_path, eval_path, pred_path):
     x_train, y_train = util.load_dataset(train_path, add_intercept=False)
     x_eval, y_eval = util.load_dataset(eval_path,add_intercept=False)
     # *** START CODE HERE ***
-    
+    gda = GDA()
+    gda.fit(x_train,y_train)
+    #Plotting training dataset
+    util.plot(x_train,y_train,gda.theta,'output/p01e_train{}.png'.format(pred_path[-5]))
+    #Predicting and plotting evaluating dataset
+    eval_predict = gda.predict(x_eval)
+    util.plot(x_eval,y_eval,gda.theta,'output/p01e_eval{}.png'.format(pred_path[-5]))
+    #Save predictions
+    np.savetxt(pred_path, eval_predict > 0.5, fmt='%d')
     # *** END CODE HERE ***
 
 class GDA(LinearModel):
